@@ -39,14 +39,12 @@ module.exports = {}
   }
 
   else if(request.method === 'POST') {
-    var string = '';
     statusCode = 201;
     request.on('data', function(chunk){
       data.results.push(JSON.parse(chunk));
     })
 
     request.on('end', function(){
-      data.results.push(string);
       response.writeHead(statusCode, headers);
       response.end();
     })
