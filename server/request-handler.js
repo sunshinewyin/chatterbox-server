@@ -42,6 +42,8 @@ module.exports = {}
     statusCode = 201;
     request.on('data', function(chunk){
       data.results.push(JSON.parse(chunk));
+      console.log(typeof chunk);
+      console.log("this is a parsed chunk:" + JSON.parse(chunk));
     })
 
     request.on('end', function(){

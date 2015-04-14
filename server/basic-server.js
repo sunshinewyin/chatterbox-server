@@ -1,9 +1,23 @@
 /* Import node's http module: */
 var http = require("http");
 var handleRequest = require('./request-handler.js');
-var url = require('url');
-var fs = require('fs');
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var count = 0;
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(countRequest);
 
+function countRequest(req, res, next) {
+  ++count;
+  console.log('There have been ' + count + ' requests');
+  next();
+}
+
+// var url = require('url');
+// var fs = require('fs');
+//console.log(app);
 
 // Every server needs to listen on a port with a unique number. The
 // standard port for HTTP servers is port 80, but that port is
@@ -11,7 +25,10 @@ var fs = require('fs');
 // so we'll use a standard testing port like 3000, other common development
 // ports are 8080 and 1337.
 var port = 3000;
+app.listen(port);
 
+var router = express.Router();
+app.use('/classes', router);
 // For now, since you're running this server on your local machine,
 // we'll have it listen on the IP address 127.0.0.1, which is a
 // special address that always refers to localhost.
@@ -31,7 +48,7 @@ var ip = "127.0.0.1";
 
 var server = http.createServer(handleRequest.requestHandler);
 console.log("Listening on http://" + ip + ":" + port);
-server.listen(port, ip);
+//server.listen(port, ip);
 
 // To start this server, run:
 //
@@ -45,4 +62,39 @@ server.listen(port, ip);
 // server.listen() will continue running as long as there is the
 // possibility of serving more requests. To stop your server, hit
 // Ctrl-C on the command line.
+
+          // get an instance of the express Router
+
+// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+// var data = {
+//   results = [];
+// };
+
+router.get('/messages', function(req, res) {
+    res.json({ message: 'hooray! welcome to our api!' });
+});
+
+router.get('/room1', Validator, function(req, res) {
+    res.json({ message: 'hooray! welchkjhkhome to our api!' });
+});
+
+router.post('/room1', function(req, res){
+    console.log(req.body);
+});
+
+function Validator(req, res, next){
+  res.send("Nope");
+  next();
+}
+
+
+
+// more routes for our API will happen here
+
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
+
+// START THE SERVER
+// =============================================================================
+//console.log('Magic happens on port ' + port);
 
